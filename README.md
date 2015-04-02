@@ -1,5 +1,5 @@
 # RedisTokenCache
-When using WIF server side token caching is almost mandatory as the token quickly weight more than 4KB which is over the cookie limit for some web browser and might be slow to upload on each request. Thinktecture provides an EntityFramework implementation to store tokens on server side. RedisTokenCache allows you to use Redis to store tokens, it's ideal in an Azure Cloud environment (WebRole, WebSite...) and provides auto cleanup on expiry.
+When using WIF server side token caching is almost mandatory as the token quickly weight more than 4KB which is over the cookie limit for some web browser and might be slow to upload on each request. RedisTokenCache allows you to use Redis to store tokens, it's ideal in an Azure Cloud environment (WebRole, WebSite...) and provides auto cleanup on expiry.
 
 [NuGet package available](https://www.nuget.org/packages/Moissaing.ThinktectureIdentityModel.Redis)
 
