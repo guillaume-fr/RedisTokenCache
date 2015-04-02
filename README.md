@@ -1,8 +1,11 @@
 # RedisTokenCache
-Redis token cache repository for Thinktecture identity : `RedisTokenCacheRepository` class that implements `ITokenCacheRepository` interface from Thinktecture.IdentityModel using Redis as backing store. 
-This package is ideal for your Azure WebSites and WebRoles.
+When using WIF server side token caching is almost mandatory as the token quickly weight more than 4KB which is over the cookie limit for some web browser and might be slow to upload on each request. Thinktecture provides an EntityFramework implementation to store tokens on server side. RedisTokenCache allows you to use Redis to store tokens, it's ideal in an Azure Cloud environment (WebRole, WebSite...) and provides auto cleanup on expiry.
 
-For more information about service-side token caching in Thinktecture IdentityModel : http://brockallen.com/2013/02/21/server-side-session-token-caching-in-wif-and-thinktecture-identitymodel/
+[NuGet package available](https://www.nuget.org/packages/Moissaing.ThinktectureIdentityModel.Redis)
+
+This library provides one class : `RedisTokenCacheRepository` that implements `ITokenCacheRepository` interface from Thinktecture.IdentityModel using Redis as backing store.
+
+For more information about server-side token caching in Thinktecture IdentityModel : http://brockallen.com/2013/02/21/server-side-session-token-caching-in-wif-and-thinktecture-identitymodel/
 
 ## Usage (Global.asax)
 
