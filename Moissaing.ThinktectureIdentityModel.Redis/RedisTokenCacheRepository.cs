@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using StackExchange.Redis;
 using Thinktecture.IdentityModel.Web;
 
@@ -21,12 +16,16 @@ namespace Moissaing.ThinktectureIdentityModel.Redis
     /// <param name="applicationName">Prefix used in cache key to avoid collisions between applications</param>
     public RedisTokenCacheRepository(string connectionString, string applicationName)
     {
-      _connection = ConnectionMultiplexer.Connect(connectionString);
-      _applicationName = applicationName;
+        _options = connectionString;
+        _applicationName = applicationName;
     }
 
+    // options allows for more flexibility in the connection string
+    private static readonly Lazy<ConfigurationOptions> ConfigOptions = new Lazy<ConfigurationOptions>(() => ConfigurationOptions.Parse(_options));
+    private static readonly Lazy<ConnectionMultiplexer> Conn = new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(ConfigOptions.Value));
+    private static ConnectionMultiplexer _connection => Conn.Value;
     private readonly string _applicationName;
-    private ConnectionMultiplexer _connection;
+    private static string _options;
 
     /// <summary>
     /// Adds or updates the token in the cache
@@ -47,10 +46,7 @@ namespace Moissaing.ThinktectureIdentityModel.Redis
     {
       var db = _connection.GetDatabase();
       var cachedValue = db.StringGet(_applicationName + key);
-      if (cachedValue.IsNull)
-        return null;
-      else
-        return new TokenCacheItem() { Key = key, Token = cachedValue };
+      return cachedValue.IsNull ? null : new TokenCacheItem { Key = key, Token = cachedValue };
     }
 
     /// <summary>
